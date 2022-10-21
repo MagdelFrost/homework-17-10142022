@@ -1,85 +1,78 @@
 package in.reqres;
 
+import in.reqres.model.ResponseModel;
+import in.reqres.specs.FullSpecs;
 import org.junit.jupiter.api.Test;
 
-import static groovy.json.JsonOutput.toJson;
+import static in.reqres.specs.FullSpecs.*;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MainApiTests extends BaseTest{
 
     @Test
     public void connectionTest() {
         given()
-                .log().uri()
-                .log().body()
-                .contentType(JSON)
+                .spec(FullSpecs.connectionRequestSpec)
                    .when()
-                .get(testData.BASE_URL + "api/users?page=2")
+                .get()
                    .then()
-                .statusCode(200);
+                .spec(connectionResponseSpec);
     }
 
     @Test
     public void registrationPositiveTest() {
-        given()
-                .log().uri()
-                .log().body()
-                .contentType(JSON)
-                .body(toJson(registration))
+        ResponseModel response = given()
+                .spec(FullSpecs.registrationRequestSpec)
+                .body(registration)
                    .when()
-                .post(testData.BASE_URL + "api/register")
+                .post()
                    .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .spec(positiveResponseSpec)
+                .extract()
+                .as(ResponseModel.class);
+
+        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
     }
 
     @Test
     public void loginPositiveTest() {
-        given()
-                .log().uri()
-                .log().body()
-                .contentType(JSON)
-                .body(toJson(registration))
+        ResponseModel response = given()
+                .spec(FullSpecs.loginRequestSpec)
+                .body(registration)
                    .when()
-                .post(testData.BASE_URL + "api/login")
+                .post()
                    .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .spec(positiveResponseSpec)
+                .extract()
+                .as(ResponseModel.class);
+
+        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
     }
 
     @Test
     public void registrationNegativeTest() {
         given()
-                .log().uri()
-                .log().body()
-                .contentType(JSON)
-                .body(toJson(registrationWrong))
+                .spec(FullSpecs.registrationRequestSpec)
+                .body(registrationWrong)
                   .when()
-                .post(testData.BASE_URL + "api/register")
+                .post()
                   .then()
-                .log().status()
-                .log().body()
-                .statusCode(400);
+                .spec(negativeResponseSpec)
+                .extract()
+                .as(ResponseModel.class);
     }
 
     @Test
     public void loginNegativeTest() {
         given()
-                .log().uri()
-                .log().body()
-                .contentType(JSON)
-                .body(toJson(registrationWrong))
-                  .when()
-                .post(testData.BASE_URL + "api/login")
-                  .then()
-                .log().status()
-                .log().body()
-                .statusCode(400);
+                .spec(FullSpecs.loginRequestSpec)
+                .body(registrationWrong)
+                .when()
+                .post()
+                .then()
+                .spec(negativeResponseSpec)
+                .extract()
+                .as(ResponseModel.class);
     }
 }

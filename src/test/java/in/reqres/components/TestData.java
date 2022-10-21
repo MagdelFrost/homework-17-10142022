@@ -9,7 +9,7 @@ import java.util.Locale;
 @NoArgsConstructor
 public class TestData {
 
-    public final String BASE_URL = "https://reqres.in/";
+    public static final String BASE_URL = "https://reqres.in/";
 
     FakeValuesService fakeValuesService = new FakeValuesService(
             new Locale("en-GB"), new RandomService());

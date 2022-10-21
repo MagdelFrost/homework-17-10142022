@@ -1,12 +1,12 @@
 package in.reqres;
 
 import in.reqres.components.TestData;
-import in.reqres.domain.Registration;
+import in.reqres.model.BodyModel;
 
 public class BaseTest {
 
     TestData testData = new TestData();
 
-    Registration registration = new Registration(testData.email, testData.password);
-    Registration registrationWrong = new Registration(testData.emailWrong, testData.passwordWrong);
+    BodyModel registration = new BodyModel(testData.email, testData.password);
+    BodyModel registrationWrong = new BodyModel(testData.emailWrong, testData.passwordWrong);
 }
