@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static in.reqres.specs.FullSpecs.*;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 
 public class MainApiTests extends BaseTest{
 
@@ -17,6 +18,8 @@ public class MainApiTests extends BaseTest{
                    .when()
                 .get()
                    .then()
+                .body("data.findAll{it.email =~/.*?@reqres.in/}.email.flatten()",
+                        hasItem(testData.getEmail()))
                 .spec(connectionResponseSpec);
     }
 
@@ -24,7 +27,7 @@ public class MainApiTests extends BaseTest{
     public void registrationPositiveTest() {
         ResponseModel response = given()
                 .spec(FullSpecs.registrationRequestSpec)
-                .body(registration)
+                .body(body)
                    .when()
                 .post()
                    .then()
@@ -39,7 +42,7 @@ public class MainApiTests extends BaseTest{
     public void loginPositiveTest() {
         ResponseModel response = given()
                 .spec(FullSpecs.loginRequestSpec)
-                .body(registration)
+                .body(body)
                    .when()
                 .post()
                    .then()
@@ -54,7 +57,7 @@ public class MainApiTests extends BaseTest{
     public void registrationNegativeTest() {
         given()
                 .spec(FullSpecs.registrationRequestSpec)
-                .body(registrationWrong)
+                .body(bodyWrong)
                   .when()
                 .post()
                   .then()
@@ -67,7 +70,7 @@ public class MainApiTests extends BaseTest{
     public void loginNegativeTest() {
         given()
                 .spec(FullSpecs.loginRequestSpec)
-                .body(registrationWrong)
+                .body(bodyWrong)
                 .when()
                 .post()
                 .then()

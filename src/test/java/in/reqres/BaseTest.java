@@ -7,6 +7,6 @@ public class BaseTest {
 
     TestData testData = new TestData();
 
-    BodyModel registration = new BodyModel(testData.email, testData.password);
-    BodyModel registrationWrong = new BodyModel(testData.emailWrong, testData.passwordWrong);
+    BodyModel body = new BodyModel(testData.getEmail(), testData.getPassword());
+    BodyModel bodyWrong = new BodyModel(testData.getEmailWrong(), testData.getPasswordWrong());
 }

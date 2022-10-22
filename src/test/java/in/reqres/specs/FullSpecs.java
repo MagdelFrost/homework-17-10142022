@@ -45,9 +45,11 @@ public class FullSpecs {
 
     public static ResponseSpecification negativeResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(400)
+            .log(LogDetail.BODY)
             .build();
 
     public static ResponseSpecification connectionResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
+            .log(LogDetail.BODY)
             .build();
 }
