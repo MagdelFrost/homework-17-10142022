@@ -9,15 +9,15 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 
-public class MainApiTests extends BaseTest{
+public class MainApiTests extends BaseTest {
 
     @Test
     public void connectionTest() {
         given()
                 .spec(FullSpecs.connectionRequestSpec)
-                   .when()
+                .when()
                 .get()
-                   .then()
+                .then()
                 .body("data.findAll{it.email =~/.*?@reqres.in/}.email.flatten()",
                         hasItem(testData.getEmail()))
                 .spec(connectionResponseSpec);
@@ -28,9 +28,9 @@ public class MainApiTests extends BaseTest{
         ResponseModel response = given()
                 .spec(FullSpecs.registrationRequestSpec)
                 .body(body)
-                   .when()
+                .when()
                 .post()
-                   .then()
+                .then()
                 .spec(positiveResponseSpec)
                 .extract()
                 .as(ResponseModel.class);
@@ -43,9 +43,9 @@ public class MainApiTests extends BaseTest{
         ResponseModel response = given()
                 .spec(FullSpecs.loginRequestSpec)
                 .body(body)
-                   .when()
+                .when()
                 .post()
-                   .then()
+                .then()
                 .spec(positiveResponseSpec)
                 .extract()
                 .as(ResponseModel.class);
@@ -58,9 +58,9 @@ public class MainApiTests extends BaseTest{
         given()
                 .spec(FullSpecs.registrationRequestSpec)
                 .body(bodyWrong)
-                  .when()
+                .when()
                 .post()
-                  .then()
+                .then()
                 .spec(negativeResponseSpec)
                 .extract()
                 .as(ResponseModel.class);
